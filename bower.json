@@ -1,0 +1,22 @@
+{
+  "name": "VRLabBasis",
+  "version": "0.1.0",
+  "authors": [
+    "Maximilian Klein"
+  ],
+  "description": "Basic structure for VRLab exercises",
+  "license": "(C) Welfenlab, 2015",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "lodash": "~3.0.1",
+    "jquery": "~2.1.3",
+    "highcharts-release": "~4.0.4"
+  }
+}
