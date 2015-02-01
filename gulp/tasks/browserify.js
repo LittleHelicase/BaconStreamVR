@@ -16,9 +16,8 @@ var gulp         = require('gulp');
 var handleErrors = require('../util/handleErrors');
 var source       = require('vinyl-source-stream');
 var config       = require('../config').browserify;
+var es6ify       = require('es6ify');
 var _            = require('lodash');
-var fs           = require("fs");
-require("brfs");
 
 var browserifyTask = function(callback, devMode) {
 
@@ -34,9 +33,10 @@ var browserifyTask = function(callback, devMode) {
       bundleConfig = _.omit(bundleConfig, ['external', 'require'])
     }
 
-    var b = browserify(bundleConfig);
-    // transform fs.read.. into strings
-    b.transform("brfs");
+    // es6 must be configured to not include libraries that are not strict...
+    //es6ify.configure("")
+    var b = browserify(bundleConfig)
+    //  .transform(es6ify);
 
     var bundle = function() {
       // Log when bundling starts

@@ -1,5 +1,9 @@
-gulp-starter
-============
+# VRLab Basis
+
+This repository contains a starter application for the VRLab exercises. You will
+find more information about the underlying structure below. This application is built upon the gulp-starter package but modifies it in some places. E.g. the gulp-starter package used [BackboneJS](http://backbonejs.org/) for app development. This package simply uses a stream based setup built with [BaconJS](https://baconjs.github.io/).
+
+## gulp-starter
 
 Starter Gulp + Browserify project with examples of how to accomplish some common tasks and workflows. Read the [blog post](http://viget.com/extend/gulp-browserify-starter-faq) for more context, and check out the [Wiki](https://github.com/greypants/gulp-starter/wiki) for some good background knowledge.
 
@@ -18,20 +22,40 @@ Includes the following tools, tasks, and workflows:
 - **New** Icon Font generation
 
 If you've never used Node or npm before, you'll need to install Node.
-If you use homebrew, do:
+If you use homebrew (Mac, [Brew](http://brew.sh/)), do:
 
 ```
 brew install node
 ```
 
+If you use Windows consider installing [Chocolatey](https://chocolatey.org/), then do:
+
+```
+choco install nodejs.install
+```
+
+Under Linux simply use the installed package manager.
+
 Otherwise, you can download and install from [here](http://nodejs.org/download/).
 
-### Install npm dependencies
+### Install npm and bower dependencies
 ```
 npm install
 ```
 
-This runs through all dependencies listed in `package.json` and downloads them to a `node_modules` folder in your project directory.
+This runs through all dependencies listed in `package.json` and downloads them to a `node_modules` folder in your project directory. After that you need the
+browser specific packages which are defined in `bower.json`. To install them you
+first need bower. You can install it via npm.
+
+```
+npm install -g bower
+```
+
+After you installed bower you can install dependencies via;
+
+```
+bower install
+```
 
 ### The `gulp` command
 To run the version of gulp installed local to the project, in the root of your this project, you'd run
@@ -59,28 +83,6 @@ This will run the `default` gulp task defined in `gulp/tasks/default.js`, which 
 - `markup` doesn't do anything but copy an html file over from src to build, but here is where you could do additional templating work.
 - `watch` has `watchify` as a dependency, which will run the browserifyTask with a `devMode` flag that enables sourcemaps and watchify, a browserify add-on that enables caching for super fast recompiling. The task itself starts watching source files and will re-run the appropriate tasks when those files change.
 
-#### Icon Fonts
-
-```
-gulp iconFont
-```
-
-Generating and re-generating icon fonts is an every once and a while task, so it's not included in `tasks/default.js`. Run the task separately any time you add an svg to your icons folder. This task has a couple of parts.
-
-##### The task
-The task calls `gulp-iconfont` and passes the options we've configured in [`gulp/config.js`](https://github.com/greypants/gulp-starter/blob/icon-font/gulp/config.js#L27). Then it listens for a `codepoints` that triggers the generation of the sass file you'll be importing into your stylesheets. [`gulp/iconFont/generateIconSass`](./gulp/tasks/iconFont/generateIconSass.js) passes the icon data to [a template](./gulp/tasks/iconFont/template.sass.swig), then outputs the resulting file to your sass directory. See the [gulp-iconFont docs](https://github.com/nfroidure/gulp-iconfont) for more config details. You may reconfigure the template to output whatever you'd like. The way it's currently set up will make icons usable as both class names and mixins.
-
-```sass
-.twitter-button
-  +icon--twitter // (@include in .scss syntax)
-```
-
-or 
-
-```html
-<span class="icon -twitter"></span>
-```
-
 #### gulp production
 
 There is also a `production` task you can run with `gulp production`, which will re-build optimized, compressed css and js files to the build folder, as well as output their file sizes to the console. It's a shortcut for running the following tasks: `['images', 'minifyCss', 'uglifyJs']`.
@@ -91,6 +93,4 @@ All paths and plugin settings have been abstracted into a centralized config obj
 
 -- 
 
-Social icons courtesy of [icomoon.io](https://icomoon.io/#icons-icomoon)</small>
-
-Made with ♥ at [Viget](http://viget.com)!
+The build system is based on gulp-started which was made at at [Viget](http://viget.com)!

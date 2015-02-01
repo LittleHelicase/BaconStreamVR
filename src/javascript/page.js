@@ -11,11 +11,10 @@ $(function(){
   
   chart.lineChart(_.map(_.range(30),function(v){return {x:v,y:v};}),{id:"chart"});
   
-  var timer = Bacon.fromPoll(1000,function(val){
-    return "A";
-  })
+  var timer = Bacon.fromPoll(1000, function(){ return "A" });
+  //var timer = Bacon.fromPoll(1000, () => "A");
   timer.take(5).onValue(function(value){
-    console.log(value);
+    $("#output").text(value);
   });
 });
  
