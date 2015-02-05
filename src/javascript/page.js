@@ -4,6 +4,16 @@ var fs = require("fs");
 var processing = require("./processing");
 var chart = require("./chart");
 var Bacon = require("bacon");
+var Scene = require("./scene");
+
+var circleScene = require("../scene/circle/scene.js");
+
+Scene.renderMethodChanged.onValue(function(val){
+  window.procCanv = processing.render(val,"#processing");
+});
+Scene.stateChanged.onValue(function(val){
+  console.log("state changed");
+});
 
 $(function(){
   var pcode = fs.readFileSync(__dirname + '/scene.pde').toString("utf8");
@@ -11,10 +21,6 @@ $(function(){
   
   chart.lineChart(_.map(_.range(30),function(v){return {x:v,y:v};}),{id:"chart"});
   
-  var timer = Bacon.fromPoll(1000, function(){ return "A" });
-  //var timer = Bacon.fromPoll(1000, () => "A");
-  timer.take(5).onValue(function(value){
-    $("#output").text(value);
-  });
+  Scene.load(circleScene);
 });
  
