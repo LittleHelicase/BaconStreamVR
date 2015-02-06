@@ -6,6 +6,7 @@ module.exports = {
   render: function(code, canvasID) {
     var canvas = $(canvasID)[0];
     var sketch = Processing.compile(code);
-    new Processing(canvas, sketch);
+    var processingCanv = new Processing(canvas, sketch);
+    return processingCanv;
   }
 }

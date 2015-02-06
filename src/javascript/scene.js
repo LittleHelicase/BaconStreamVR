@@ -8,7 +8,10 @@ var stateStream = new Bacon.Bus();
 loadedStream.map(function(scene){
     // initializes it and plugs the state
     // into the stream bus
-    return stateStream.plug(scene.initialize());
+    var current = scene.initialize().map(function(val){
+      return {currentState: val, scene: scene};
+    })
+    return stateStream.plug(current);
   }).slidingWindow(2).onValue(function(unplugs){
     // if present...
     if(unplugs.length > 1){
@@ -27,5 +30,6 @@ module.exports = {
   },
   // observable streams
   renderMethodChanged: renderMethodChanged,
-  stateChanged: stateStream
+  state: stateStream,
+  update: loadedStream
 }

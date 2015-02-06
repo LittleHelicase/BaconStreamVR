@@ -8,7 +8,7 @@ Scene =  {
   name : "Moving in circles",
   initialize: function(){
     var update = Scene.ui.initialize().update;
-    var initial = Scene.simulation.initialize();
+    var initial = Scene.simulation.initialize(0.05);
     var state = Bacon.update(initial,
       [update],Scene.simulation.iterate);
     return state;
@@ -19,7 +19,7 @@ Scene =  {
     initialize: function(){
       $("#ui").html("");
       $("#ui").append(Scene.ui.template);
-      return {update: streamUpdate("start", "stop",400)};
+      return {update: streamUpdate("start", "pause",25)};
     }
   },
   simulation: {

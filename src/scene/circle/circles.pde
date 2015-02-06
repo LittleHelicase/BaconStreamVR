@@ -4,14 +4,15 @@ void setup()
   noStroke();
   rectMode(CENTER);
 }
-  
+
 void draw() 
 {   
   background(105); 
-  fill(255, 204);
-  rect(mouseX, height/2, mouseY/2+10, mouseY/2+10);
-  fill(255, 204);
-  int inverseX = width-mouseX;
-  int inverseY = height-mouseY;
-  rect(inverseX, height/2, (inverseY/2)+10, (inverseY/2)+10);
+  fill(152,199,61);
+  // Simulation is a global Javascript variable
+  // that is set in page.js
+  int x = Simulation.state.x*90 + 320;
+  int y = Simulation.state.y*90 + 180;
+  ellipse(x,y,75,75);
+  
 }

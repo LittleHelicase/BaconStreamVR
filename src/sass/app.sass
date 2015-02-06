@@ -2,6 +2,15 @@
 @import typography
 @import icons
 
+@import slider
+
+/* colors inspired by Jan Meeus logopond.com/gallery/detail/143626# */
+
+body
+  margin: 0
+  padding: 0
+  background-color: #e2f4de
+
 .social-icons
   h4
     display: inline-block
@@ -15,12 +24,32 @@ div[flex]
   display: flex
   flex-wrap: wrap
   justify-content: space-around
-  
+  align-items: center
+
+div[items] > *
+  padding: 20px
+
 #output
   min-width: 30vw
   width: 40vw
   min-height: 300px
-  background-color: #777
+  background-color: #666
   color: white
   text-align: left
   padding: 2em
+  
+#output:before
+  content: "Output"
+  font-size: 150%
+  font-weight: 600
+  
+#ui
+  text-align: center
+  
+#main-menu
+  margin: 0
+  background-color: #00A9E0
+  border-bottom: solid 3px #006e8a
+
+#main-menu h2
+  margin-top:10px

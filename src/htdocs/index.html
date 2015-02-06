@@ -4,14 +4,20 @@
     <meta charset="utf-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
     <title>VR-Lab Basis</title>
+    <link rel="stylesheet" href="bower_components/semantic-ui/dist/semantic.min.css" />
     <link rel="stylesheet" href="app.css" />
+    
     
   </head>
 
   <body>
-    <h1>Basispaket</h1>
-    <div id="ui"></div>
-    <div flex>
+    <div class="ui inverted menu" id="main-menu">
+      <div class="item">
+        <h2>Basispaket</h2>
+      </div>
+      <div class="right menu" id="ui"></div>
+    </div>
+    <div flex items>
       <div><canvas id="processing"></canvas></div>
       <div id="chart">Graph</div>
       <div id="output">
@@ -19,5 +25,6 @@
     
     <script src="global.js"></script>
     <script src="page.js"></script>
+    <script src="bower_components/semantic-ui/dist/semantic.min.js"></script>
   </body>
 </html>
