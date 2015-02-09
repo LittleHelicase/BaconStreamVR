@@ -6,8 +6,8 @@ var streamUpdate = require("../../javascript/util/stream.update.js");
 
 Scene =  {
   name : "Moving in circles",
-  initialize: function(){
-    var update = Scene.ui.initialize().update;
+  initialize: function(messages){
+    var update = Scene.ui.initialize(messages).update;
     var initial = Scene.simulation.initialize(0.05);
     var state = Bacon.update(initial,
       [update],Scene.simulation.iterate);
@@ -16,9 +16,18 @@ Scene =  {
   ui: {
     render: fs.readFileSync(__dirname + "/circles.pde").toString(),
     template: fs.readFileSync(__dirname + "/ui.html").toString(),
-    initialize: function(){
+    initialize: function(messages){
       $("#ui").html("");
       $("#ui").append(Scene.ui.template);
+      
+      messages.onValue(function(val){
+        if(val.type=="history-changed"){
+          $("#ui").find("[data-id='seeker']").attr("min",0);
+          $("#ui").find("[data-id='seeker']").attr("max",val.length-1);
+          $("#ui").find("[data-id='seeker']").attr("value",val.length-1);
+        }
+      });
+      
       return {update: streamUpdate("start", "pause",25)};
     }
   },
