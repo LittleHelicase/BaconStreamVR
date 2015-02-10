@@ -25,13 +25,7 @@ var renderMethodChanged = loadedStream.map(function(scene){
   return scene.ui.render;
 });
 
-var historyStream = stateStream
-  .debounceImmediate(25)
-  .slidingWindow(5000);
-  
-historyStream.onValue(function(val){
-  messageStream.push({type: "history-changed", length: val.length});
-});
+messageStream.filter(function(v){ return v.type == "seek"; });
 
 module.exports = {
   load: function(scene){

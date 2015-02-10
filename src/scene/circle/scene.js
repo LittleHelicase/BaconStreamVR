@@ -7,28 +7,49 @@ var streamUpdate = require("../../javascript/util/stream.update.js");
 Scene =  {
   name : "Moving in circles",
   initialize: function(messages){
-    var update = Scene.ui.initialize(messages).update;
+    var ui = Scene.ui.initialize(messages);
+    var update = ui.update;
     var initial = Scene.simulation.initialize(0.05);
     var state = Bacon.update(initial,
       [update],Scene.simulation.iterate);
-    return state;
+    var historyStream = state.toEventStream()
+      .debounceImmediate(25)
+      .slidingWindow(5000);
+        
+    historyStream.onValue(function(val){
+      messages.push({type: "history-changed", length: val.length});
+    });
+    var seekStream = ui.seek.combine(historyStream, function(s,h){
+      return h[s];
+    });
+    return state.toEventStream().merge(seekStream);
   },
   ui: {
     render: fs.readFileSync(__dirname + "/circles.pde").toString(),
     template: fs.readFileSync(__dirname + "/ui.html").toString(),
     initialize: function(messages){
       $("#ui").html("");
-      $("#ui").append(Scene.ui.template);
+      var ui = $("#ui").append(Scene.ui.template);
       
       messages.onValue(function(val){
         if(val.type=="history-changed"){
-          $("#ui").find("[data-id='seeker']").attr("min",0);
-          $("#ui").find("[data-id='seeker']").attr("max",val.length-1);
-          $("#ui").find("[data-id='seeker']").attr("value",val.length-1);
+          ui.find("[data-id='seeker']").attr("min",0);
+          ui.find("[data-id='seeker']").attr("max",val.length-1);
+          ui.find("[data-id='seeker']").attr("value",val.length-1);
         }
       });
       
-      return {update: streamUpdate("start", "pause",25)};
+      var seek =  ui.find("[data-id='seeker']")
+        .asEventStream("input")
+        .map(function(val){
+          return val.target.value;
+        });
+      
+      
+      return {
+        update: streamUpdate("start", "pause",25),
+        seek: seek
+      };
     }
   },
   simulation: {
