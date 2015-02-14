@@ -17,7 +17,7 @@ Scene =  {
       .slidingWindow(5000);
         
     historyStream.onValue(function(val){
-      messages.push({type: "history-changed", length: val.length});
+      messages.push({type: "history-changed", length: val.length, history: val});
     });
     var seekStream = ui.seek.combine(historyStream, function(s,h){
       return h[s];
@@ -35,7 +35,7 @@ Scene =  {
         if(val.type=="history-changed"){
           ui.find("[data-id='seeker']").attr("min",0);
           ui.find("[data-id='seeker']").attr("max",val.length-1);
-          ui.find("[data-id='seeker']").attr("value",val.length-1);
+          ui.find("[data-id='seeker']").val(val.length-1);
         }
       });
       
@@ -54,7 +54,7 @@ Scene =  {
   },
   simulation: {
     initialize: function(step){
-      return {x:1,y:0,time:0,step:step};
+      return {x:1,y:0,time:0,step:step,iteration:0};
     },
     iterate: function(prev){
       var orth = {x:-prev.y,y:prev.x};
@@ -62,7 +62,8 @@ Scene =  {
         x: prev.x + orth.x * prev.step,
         y: prev.y + orth.y * prev.step,
         time: prev.time + prev.step,
-        step: prev.step
+        step: prev.step,
+        iteration: prev.iteration + 1
       }
     },
     properties: ["x","y","time"],

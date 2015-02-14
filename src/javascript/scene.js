@@ -34,5 +34,6 @@ module.exports = {
   // observable streams
   renderMethodChanged: renderMethodChanged,
   state: stateStream,
-  update: loadedStream
+  update: loadedStream,
+  messages: messageStream
 }

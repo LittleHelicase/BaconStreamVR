@@ -19,6 +19,13 @@ Scene.state.onValue(function(val){
   window.Simulation.state = val.currentState;
 });
 
+Scene.messages.onValue(function(val){
+  if(val.type == "history-changed"){
+    window.Simulation = window.Simulation || {};
+    window.Simulation.history = val.history;
+  }
+})
+
 $(function(){
   var pcode = fs.readFileSync(__dirname + '/scene.pde').toString("utf8");
   window.procCanv = processing.render(pcode,"#processing");
