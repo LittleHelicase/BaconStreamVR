@@ -74,6 +74,7 @@ function createLineChart(sceneStream,dataStream, options){
   };
   chart = new Highcharts.Chart(options);
   sceneStream.onValue(function(scene){
+    chart.setTitle({text:scene.name});
     clearSeries(chart.series);
     _.chain(scene.simulation.properties)
       .reject(function(val){ return val == "time"})

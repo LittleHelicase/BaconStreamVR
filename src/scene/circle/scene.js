@@ -2,7 +2,6 @@
 var fs = require("fs");
 var $ = require("jquery");
 var Bacon = require("bacon");
-var streamUpdate = require("../../javascript/util/stream.update.js");
 
 Scene =  {
   name : "Moving in circles",
@@ -15,7 +14,7 @@ Scene =  {
     var historyStream = state.toEventStream()
       .debounceImmediate(25)
       .slidingWindow(5000);
-        
+
     historyStream.onValue(function(val){
       messages.push({type: "history-changed", length: val.length, history: val});
     });
@@ -26,30 +25,9 @@ Scene =  {
   },
   ui: {
     render: fs.readFileSync(__dirname + "/circles.pde").toString(),
-    template: fs.readFileSync(__dirname + "/ui.html").toString(),
     initialize: function(messages){
-      $("#ui").html("");
-      var ui = $("#ui").append(Scene.ui.template);
-      
-      messages.onValue(function(val){
-        if(val.type=="history-changed"){
-          ui.find("[data-id='seeker']").attr("min",0);
-          ui.find("[data-id='seeker']").attr("max",val.length-1);
-          ui.find("[data-id='seeker']").val(val.length-1);
-        }
-      });
-      
-      var seek =  ui.find("[data-id='seeker']")
-        .asEventStream("input")
-        .map(function(val){
-          return val.target.value;
-        });
-      
-      
-      return {
-        update: streamUpdate("start", "pause",25),
-        seek: seek
-      };
+      var timectrls = require("../../javascript/ui/timecontrols.js");
+      return timectrls({id:"#ui", messageStream: messages});
     }
   },
   simulation: {
