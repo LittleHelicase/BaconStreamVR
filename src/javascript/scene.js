@@ -1,25 +1,26 @@
 
 var Bacon = require("bacon")
+var $ = require("jquery");
 
 var loadedStream = new Bacon.Bus();
 var stateStream = new Bacon.Bus();
 var messageStream = new Bacon.Bus();
 
 // loading a new scene
-loadedStream.map(function(scene){
-    // initializes it and plugs the state
-    // into the stream bus
-    var current = scene.initialize(messageStream).map(function(val){
-      return {currentState: val, scene: scene};
-    })
-    return stateStream.plug(current);
-  }).slidingWindow(2).onValue(function(unplugs){
-    // if present...
-    if(unplugs.length > 1){
-      // ...unplug the previous stateStream
-      unplugs[0]();
-    }
-  });
+loadedStream.map(function(load){
+  var scene = load.scene;
+  var domBase = load.domBase;
+  // initializes it and plugs the state
+  // into the stream bus
+  var deinitialize = scene.initialize(domBase, messageStream);
+  return deinitialize;
+}).slidingWindow(2).onValue(function(deinitialize){
+  // if present...
+  if(deinitialize.length > 1){
+    // ...deinitialize the previous scene
+    deinitialize[0]();
+  }
+});
 
 var renderMethodChanged = loadedStream.map(function(scene){
   return scene.ui.render;
@@ -28,12 +29,8 @@ var renderMethodChanged = loadedStream.map(function(scene){
 messageStream.filter(function(v){ return v.type == "seek"; });
 
 module.exports = {
-  load: function(scene){
-    loadedStream.push(scene);
-  },
-  // observable streams
-  renderMethodChanged: renderMethodChanged,
-  state: stateStream,
-  update: loadedStream,
-  messages: messageStream
+  load: function(scene, domBase){
+    domBase = domBase || $;
+    loadedStream.push({scene: scene, domBase: domBase});
+  }
 }

@@ -2,34 +2,20 @@
 var fs = require("fs");
 var $ = require("jquery");
 var Bacon = require("bacon");
+var Plugins = require("../../javascript/plugins/plugins.js");
 
 Scene =  {
   name : "Moving in circles",
+  plugins: [
+    require("../../javascript/plugins/controls/plugin.js"),
+    require("../../javascript/plugins/history/plugin.js")
+  ],
   initialize: function(messages){
-    var ui = Scene.ui.initialize(messages);
-    var update = ui.update;
-    var initial = Scene.simulation.initialize(0.05);
-    var state = Bacon.update(initial,
-      [update],Scene.simulation.iterate);
-    var historyStream = state.toEventStream()
-      .debounceImmediate(25)
-      .slidingWindow(5000);
-
-    historyStream.onValue(function(val){
-      messages.push({type: "history-changed", length: val.length, history: val});
-    });
-    var seekStream = ui.seek.combine(historyStream, function(s,h){
-      return h[s];
-    });
-    return state.toEventStream().merge(seekStream);
+    var plugins = Plugins.load(Scene, messages);
+    
+    return plugins.streams;
   },
-  ui: {
-    render: fs.readFileSync(__dirname + "/circles.pde").toString(),
-    initialize: function(messages){
-      var timectrls = require("../../javascript/ui/timecontrols.js");
-      return timectrls({id:"#ui", messageStream: messages});
-    }
-  },
+  processing: fs.readFileSync(__dirname + "/circles.pde").toString(),
   simulation: {
     initialize: function(step){
       return {x:1,y:0,time:0,step:step,iteration:0};
