@@ -10,9 +10,16 @@ var messageStream = new Bacon.Bus();
 loadedStream.map(function(load){
   var scene = load.scene;
   var domBase = load.domBase;
+  
+  // release all plugged streams on the message bus
+  messageStream.end();
+  // create a clean new one...
+  messageStream = new Bacon.Bus();
+  
   // initializes it and plugs the state
   // into the stream bus
   var deinitialize = scene.initialize(domBase, messageStream);
+  messageStream.push({type:"scene/loaded", value: scene});
   return deinitialize;
 }).slidingWindow(2).onValue(function(deinitialize){
   // if present...

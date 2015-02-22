@@ -17,8 +17,9 @@ module.exports = {
       return h[s];
     });
     return {
+      module: "history",
       streams: { "history/state": seekStream },
-      dom: {element: "#id", dom: dom}
+      dom: {element: "#ui", dom: dom}
     };
   }
 };

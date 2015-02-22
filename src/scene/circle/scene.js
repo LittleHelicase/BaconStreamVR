@@ -7,11 +7,13 @@ var Plugins = require("../../javascript/plugins/plugins.js");
 Scene =  {
   name : "Moving in circles",
   plugins: [
+    require("../../javascript/plugins/simulation/plugin.js"),
     require("../../javascript/plugins/controls/plugin.js"),
-    require("../../javascript/plugins/history/plugin.js")
+    require("../../javascript/plugins/history/plugin.js"),
+    require("../../javascript/plugins/processing/plugin.js")
   ],
-  initialize: function(messages){
-    var plugins = Plugins.load(Scene, messages);
+  initialize: function(domBase,messages){
+    var plugins = Plugins.load(Scene, domBase, messages);
     
     return plugins.streams;
   },

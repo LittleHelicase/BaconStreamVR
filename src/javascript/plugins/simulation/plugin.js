@@ -10,12 +10,10 @@ module.exports = {
     var initial = Scene.simulation.initialize(0.05);
     var state = Bacon.update(initial,
       [update],Scene.simulation.iterate);
-      messages.plug(state.map(function(val){
-        return {type:"simulation/state", value: val};
-    }));
     
     return {
-      streams: {state: state}
+      module: "simulation",
+      streams: {"simulation/state": state}
     }
   }
 }

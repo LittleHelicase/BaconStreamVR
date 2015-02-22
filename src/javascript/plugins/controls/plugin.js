@@ -11,11 +11,12 @@ module.exports = {
       .skipDuplicates()
       .toProperty(false);
     var tick = Bacon.interval(25,1);
-    return tick.filter(running);
+    var update = tick.filter(running);
     
     return {
-      streams: {"controls/update": ui.update},
-      dom: [{element: "#ui", dom: ui.html}]
+      module: "controls",
+      streams: {"controls/update": update},
+      dom: {element: "#ui", dom: ui.html}
     };
   }
 };
