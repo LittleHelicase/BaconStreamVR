@@ -2,7 +2,6 @@
 var fs = require("fs");
 var $ = require("jquery");
 var Bacon = require("bacon");
-var Plugins = require("../../javascript/plugins/plugins.js");
 
 Scene =  {
   name : "Moving in circles",
@@ -12,12 +11,17 @@ Scene =  {
     require("../../javascript/plugins/history/plugin.js"),
     require("../../javascript/plugins/processing/plugin.js")
   ],
-  initialize: function(domBase,messages){
-    var plugins = Plugins.load(Scene, domBase, messages);
-    
-    return plugins.streams;
+  processing: {
+    render: fs.readFileSync(__dirname + "/circles.pde").toString(),
+    sync: [
+      {type:"simulation/state",as:"state"},
+      {type: "history/state", as:"state"},
+      {type: "history/history", as:"history"}
+    ]
   },
-  processing: fs.readFileSync(__dirname + "/circles.pde").toString(),
+  history: {
+    store: "simulation/state"
+  },
   simulation: {
     initialize: function(step){
       return {x:1,y:0,time:0,step:step,iteration:0};

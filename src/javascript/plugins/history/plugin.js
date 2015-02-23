@@ -6,19 +6,21 @@ module.exports = {
     var ui = uiCreator({messageStream: messages});
     var dom = ui.html;
     var historyStream = messages.toEventStream()
-      .filter(function(msg){ return msg.type == "simulation/state"; })
+      .filter(function(msg){ return msg.type == Scene.history.store; })
+      .map(function(msg){ return msg.value; })
       .debounceImmediate(25)
       .slidingWindow(5000);
     
     historyStream.onValue(function(val){
       messages.push({type: "history/changed", length: val.length, history: val});
     });
-    var seekStream = ui.seek.combine(historyStream, function(s,h){
+    var history = historyStream.toProperty();
+    var seekStream = historyStream.sampledBy(ui.seek, function(h,s){
       return h[s];
     });
     return {
       module: "history",
-      streams: { "history/state": seekStream },
+      streams: { "history/state": seekStream, "history/history": historyStream },
       dom: {element: "#ui", dom: dom}
     };
   }

@@ -1,6 +1,7 @@
 
 var Bacon = require("bacon")
 var $ = require("jquery");
+var Plugins = require("./plugins/plugins.js");
 
 var loadedStream = new Bacon.Bus();
 var stateStream = new Bacon.Bus();
@@ -18,7 +19,9 @@ loadedStream.map(function(load){
   
   // initializes it and plugs the state
   // into the stream bus
-  var deinitialize = scene.initialize(domBase, messageStream);
+  var plugins = Plugins.load(scene, domBase, messageStream);
+  if(scene.initialize) scene.initialize(domBase, messageStream);
+  var deinitialize = plugins.streams;
   messageStream.push({type:"scene/loaded", value: scene});
   return deinitialize;
 }).slidingWindow(2).onValue(function(deinitialize){
