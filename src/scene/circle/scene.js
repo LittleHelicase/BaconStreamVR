@@ -1,16 +1,14 @@
 
 var fs = require("fs");
-var $ = require("jquery");
-var Bacon = require("bacon");
 
 Scene =  {
   name : "Moving in circles",
   plugins: [
-    require("../../javascript/plugins/simulation/plugin.js"),
-    require("../../javascript/plugins/controls/plugin.js"),
-    require("../../javascript/plugins/history/plugin.js"),
-    require("../../javascript/plugins/processing/plugin.js"),
-    require("../../javascript/plugins/chart/plugin.js")
+    require("../../plugins/simulation/plugin.js"),
+    require("../../plugins/controls/plugin.js"),
+    require("../../plugins/history/plugin.js"),
+    require("../../plugins/processing/plugin.js"),
+    require("../../plugins/chart/plugin.js")
   ],
   processing: {
     render: fs.readFileSync(__dirname + "/circles.pde").toString(),
