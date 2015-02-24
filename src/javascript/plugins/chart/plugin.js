@@ -3,6 +3,9 @@ var charts = require("./chart.js");
 var uuid = require("node-uuid");
 
 module.exports = {
+  name: "chart",
+  description: "chart element using highcharts",
+  platform: ["browser"],
   initialize: function(Scene,messages){
     var sceneLoaded = messages.filter(function(v){
       return v.type == "scene/loaded";
@@ -20,7 +23,7 @@ module.exports = {
     charts.lineChart(sceneLoaded, states, {id: "__chart__"+chartUUID});
     
     return {
-      module: "charts",
+      module: "chart",
       streams: { },
       dom: {element: "#content", dom: "<div id='__chart__"+chartUUID+"''></div>'"}
     };

@@ -7,9 +7,10 @@ module.exports = {
       return v.type == "controls/update";
     });
     
-    var initial = Scene.simulation.initialize(0.05);
+    var initial = Scene.simulation.initialize();
+    var step = Bacon.constant(Scene.simulation.step);
     var state = Bacon.update(initial,
-      [update],Scene.simulation.iterate);
+      [step,update],Scene.simulation.iterate);
     
     return {
       module: "simulation",

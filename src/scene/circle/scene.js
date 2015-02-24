@@ -26,27 +26,19 @@ Scene =  {
   chart: {
     data: "simulation/state",
     abscissa: "time",
-    datasets: ["x","y"],
-    query: function(state, prop){
-      switch(prop){
-        case "x": return state.x;
-        case "y": return state.y;
-        case "time": return state.time;
-      }
-      throw new Error("Unknown property " + prop);
-    }
+    datasets: ["x","y"]
   },
   simulation: {
-    initialize: function(step){
-      return {x:1,y:0,time:0,step:step,iteration:0};
+    step: 0.05,
+    initialize: function(){
+      return {x:1,y:0,time:0,iteration:0};
     },
-    iterate: function(prev){
+    iterate: function(prev, step){
       var orth = {x:-prev.y,y:prev.x};
       return {
-        x: prev.x + orth.x * prev.step,
-        y: prev.y + orth.y * prev.step,
-        time: prev.time + prev.step,
-        step: prev.step,
+        x: prev.x + orth.x * step,
+        y: prev.y + orth.y * step,
+        time: prev.time + step,
         iteration: prev.iteration + 1
       }
     }

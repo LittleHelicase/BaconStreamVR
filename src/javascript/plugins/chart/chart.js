@@ -65,8 +65,8 @@ function createLineChart(sceneStream,dataStream, options){
             .map(function(prop){
               var series = chart.series[propID];
               series.addPoint([
-                  currentScene.chart.query(state, currentScene.chart.abscissa),
-                  currentScene.chart.query(state, prop)
+                  state[currentScene.chart.abscissa],
+                  state[prop]
                 ],false,false);
               propID++;
             });
