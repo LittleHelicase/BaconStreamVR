@@ -9,18 +9,32 @@ Scene =  {
     require("../../javascript/plugins/simulation/plugin.js"),
     require("../../javascript/plugins/controls/plugin.js"),
     require("../../javascript/plugins/history/plugin.js"),
-    require("../../javascript/plugins/processing/plugin.js")
+    require("../../javascript/plugins/processing/plugin.js"),
+    require("../../javascript/plugins/chart/plugin.js")
   ],
   processing: {
     render: fs.readFileSync(__dirname + "/circles.pde").toString(),
     sync: [
-      {type:"simulation/state",as:"state"},
+      {type: "simulation/state", as:"state"},
       {type: "history/state", as:"state"},
       {type: "history/history", as:"history"}
     ]
   },
   history: {
     store: "simulation/state"
+  },
+  chart: {
+    data: "simulation/state",
+    abscissa: "time",
+    datasets: ["x","y"],
+    query: function(state, prop){
+      switch(prop){
+        case "x": return state.x;
+        case "y": return state.y;
+        case "time": return state.time;
+      }
+      throw new Error("Unknown property " + prop);
+    }
   },
   simulation: {
     initialize: function(step){
@@ -35,15 +49,6 @@ Scene =  {
         step: prev.step,
         iteration: prev.iteration + 1
       }
-    },
-    properties: ["x","y","time"],
-    query: function(state, prop){
-      switch(prop){
-        case "x": return state.x;
-        case "y": return state.y;
-        case "time": return state.time;
-      }
-      throw new Error("Unknown property " + prop);
     }
   }
 }

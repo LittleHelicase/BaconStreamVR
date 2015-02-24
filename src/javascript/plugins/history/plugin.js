@@ -16,11 +16,16 @@ module.exports = {
     });
     var history = historyStream.toProperty();
     var seekStream = historyStream.sampledBy(ui.seek, function(h,s){
-      return h[s];
+      var seeked = h[s];
+      seeked.seek = s;
+      return seeked;
     });
     return {
       module: "history",
-      streams: { "history/state": seekStream, "history/history": historyStream },
+      streams: { 
+        "history/state": seekStream,
+        "history/history": historyStream
+      },
       dom: {element: "#ui", dom: dom}
     };
   }
