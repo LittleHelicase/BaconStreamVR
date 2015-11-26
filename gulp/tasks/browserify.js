@@ -16,7 +16,6 @@ var gulp         = require('gulp');
 var handleErrors = require('../util/handleErrors');
 var source       = require('vinyl-source-stream');
 var config       = require('../config').browserify;
-var es6ify       = require('es6ify');
 var _            = require('lodash');
 
 var browserifyTask = function(callback, devMode) {

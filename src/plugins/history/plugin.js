@@ -10,11 +10,11 @@ module.exports = {
       .map(function(msg){ return msg.value; })
       .debounceImmediate(25)
       .slidingWindow(5000);
-    
+
     historyStream.onValue(function(val){
       messages.push({type: "history/changed", length: val.length, history: val});
     });
-    var history = historyStream.toProperty();
+    
     var seekStream = historyStream.sampledBy(ui.seek, function(h,s){
       var seeked = h[s];
       seeked.seek = s;
@@ -22,7 +22,7 @@ module.exports = {
     });
     return {
       module: "history",
-      streams: { 
+      streams: {
         "history/state": seekStream,
         "history/history": historyStream
       },
