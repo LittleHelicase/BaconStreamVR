@@ -1,7 +1,10 @@
-# VRLab Basis
+# BaconStreamVR
 
-This repository contains a starter application for the VRLab exercises. You will
-find more information about the underlying structure below. This application is built upon the gulp-starter package but modifies it in some places. E.g. the gulp-starter package used [BackboneJS](http://backbonejs.org/) for app development. This package simply uses a stream based setup built with [BaconJS](https://baconjs.github.io/).
+A small experiment using Bacon and a process based descriptive system.
+This application is built upon the gulp-starter package but modifies it
+in some places. E.g. the gulp-starter package used
+[BackboneJS](http://backbonejs.org/) for app development. This package simply
+uses a stream based setup built with [BaconJS](https://baconjs.github.io/).
 
 ## gulp-starter
 
@@ -91,6 +94,6 @@ There is also a `production` task you can run with `gulp production`, which will
 All paths and plugin settings have been abstracted into a centralized config object in `gulp/config.js`. Adapt the paths and settings to the structure and needs of your project.
 
 
--- 
+--
 
 The build system is based on gulp-started which was made at at [Viget](http://viget.com)!
